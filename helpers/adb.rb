@@ -39,9 +39,16 @@ module CaptainADB
           property_value = regex.match(`#{cmd}`.chomp)
           device[property] = property_value ? property_value[1] : 'N/A'
         end
-        cmd = "adb -s #{device_sn} shell getprop | grep 'ro.product.version.release'"
-        regex = /\[ro\.product\.version\.release\]:\s+\[(.*?)\]$/
+        cmd = PrivateMethods.synthesize_command("adb shell getprop | grep 'ro.build.version.release'", device_sn)
+        puts cmd
+        puts `#{cmd}`
+        regex = /release\]:\s+\[(.*?)\]$/
+=begin
+        regex = /\[.*\]\:/
         property_value = regex.match(`#{cmd}`.chomp)
+=end
+        property_value = regex.match(`#{cmd}`.chomp)
+        puts regex
         device['release'] =  property_value ? property_value[1] : 'N/A'
         devices.push(device)
       end
