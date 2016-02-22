@@ -33,23 +33,14 @@ module CaptainADB
       devices = list_devices.inject([]) do |devices, device_sn|
         device = {}
         device['sn'] = device_sn
-        ['manufacturer', 'brand', 'model'].each do |property|
-          cmd = "adb -s #{device_sn} shell getprop | grep 'ro.product.#{property}'"
+        ['ro.product.manufacturer', 'ro.product.brand', 'ro.product.model', 'ro.build.version.release'].each do |property|
+          cmd = "adb -s #{device_sn} shell getprop | grep '#{property}'"
           regex = /#{property}\]:\s+\[(.*?)\]$/
           property_value = regex.match(`#{cmd}`.chomp)
-          device[property] = property_value ? property_value[1] : 'N/A'
+          puts property.to_s
+          property_name = property.to_s.gsub(/(.*\.)*/, "")
+          device[property_name] = property_value ? property_value[1] : 'N/A'
         end
-        cmd = PrivateMethods.synthesize_command("adb shell getprop | grep 'ro.build.version.release'", device_sn)
-        puts cmd
-        puts `#{cmd}`
-        regex = /release\]:\s+\[(.*?)\]$/
-=begin
-        regex = /\[.*\]\:/
-        property_value = regex.match(`#{cmd}`.chomp)
-=end
-        property_value = regex.match(`#{cmd}`.chomp)
-        puts regex
-        device['release'] =  property_value ? property_value[1] : 'N/A'
         devices.push(device)
       end
     end
