@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="053c8942-96bc-4411-b917-cc7679d233a4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helpers/adb.rb" afterPath="$PROJECT_DIR$/helpers/adb.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/devices.rb" afterPath="$PROJECT_DIR$/routes/devices.rb" />
     </list>
     <ignored path="Captain-ADB.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,8 +50,8 @@
       <file leaf-file-name="adb.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/helpers/adb.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23490813">
-              <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.15748031">
+              <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -397,7 +395,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/helpers/adb.rb</url>
-          <line>74</line>
+          <line>77</line>
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="2" />
@@ -549,8 +547,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/helpers/adb.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23490813">
-          <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.15748031">
+          <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
           <folding />
         </state>
       </provider>
