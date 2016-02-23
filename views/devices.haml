@@ -90,6 +90,14 @@
   %button{:type => "button", :class => "btn btn-warning vertical-center", :onclick => "loadDevicesList()", :style => "display: inline-block; margin-left: 10px;"} ↻
 %form{:role => "form", :action => "/devices/", :method => "post"}
   %div{:id => "devicesList"}
+
+%form{:role => "form", :action => "/api/devices/update", :method => "post"}
+  %h3{:class => "vertical-center", :style => "display: inline-block;"} Install apk from URL
+  %div{:class => "new-line ui-widget"}
+    %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/apk"}
+  %div{:class => "new-line"}
+    %button{:type => "submit", :class => "btn btn-success center-block"} Install apk
+
 %form{:role => "form", :action => "/devices/#{session[:device_sn]}/packages/", :method => "post"}
   - if session[:device_sn]
     %div{:id => "packagesList", :class => "form-group"}

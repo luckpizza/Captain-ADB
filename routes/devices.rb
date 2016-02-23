@@ -43,7 +43,8 @@ module CaptainADB
       end
 
       post '/update' do
-        install_app(params["url"])
+        install_app(params["app_url"])
+        redirect '/'
       end
 
       put '/:device_sn/?' do |device_sn|
