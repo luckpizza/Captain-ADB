@@ -1,4 +1,6 @@
 require_relative 'io_stream'
+require 'open-uri'
+
 
 module CaptainADB
   module ADB
@@ -87,6 +89,22 @@ module CaptainADB
         info.push({x.first => x.last.chomp.split(/\s+/)})
       end
       info
+    end
+
+    def install_app(url)
+      puts 'Updating app'
+      File.open("/tmp/app.apk", "wb") do |saved_file|
+        # the following "open" is provided by open-uri
+        open(url, "rb") do |read_file|
+          saved_file.write(read_file.read)
+        end
+      end
+      list_devices.inject([]) do |devices, device_sn|
+        puts "installing app in device #{device_sn}"
+        cmd = PrivateMethods.synthesize_command("adb install -reinstall /tmp/app.apk", device_sn)
+        puts cmd
+        puts `#{cmd}`.chomp
+      end
     end
 
     def uninstall_app(package_name, device_sn = nil)
