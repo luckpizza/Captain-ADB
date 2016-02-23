@@ -41,6 +41,8 @@ module CaptainADB
           property_name = property.to_s.gsub(/(.*\.)*/, "")
           device[property_name] = property_value ? property_value[1] : 'N/A'
         end
+        device['app_version'] = `adb -s #{device_sn} shell dumpsys package com.groupon.redemption | egrep versionName`.gsub(/(.*=)/, "")
+        device['battery'] = `adb -s #{device_sn} shell dumpsys battery | grep level`.gsub(/.*:/, "")
         devices.push(device)
       end
     end
