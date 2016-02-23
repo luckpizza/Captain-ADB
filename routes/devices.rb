@@ -43,7 +43,7 @@ module CaptainADB
       end
 
       post '/update' do
-        install_app('http://nexus-dev/content/repositories/snapshots/com/groupon/merchant/redemption/4.3-4481-SNAPSHOT/redemption-4.3-4481-20160222.112100-1-appstoreRelease.apk')
+        install_app(params["url"])
       end
 
       put '/:device_sn/?' do |device_sn|
