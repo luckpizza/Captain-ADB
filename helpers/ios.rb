@@ -28,7 +28,6 @@ module CaptainADB
           end
           device['app_version'] = "NA"
           device['battery'] = "NA"
-          device['brand'] ="NA"
           device['manufacturer'] ="Apple"
           puts "IOS device #{device}"
           devices.push(device)
