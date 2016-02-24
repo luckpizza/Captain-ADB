@@ -1,6 +1,6 @@
 require_relative 'io_stream'
-require 'open-uri'
 require_relative 'ios'
+require_relative 'file_helper'
 
 def initialize
   @my_mutex = Mutex.new
@@ -102,17 +102,12 @@ module CaptainADB
     end
 
     def install_app(url)
+      local_path = "/tmp/app.apk"
       @my_mutex.synchronize do
-        puts "Downloading app from: #{url}"
-        File.open("/tmp/app.apk", "wb") do |saved_file|
-          # the following "open" is provided by open-uri
-          open(url, "rb") do |read_file|
-            saved_file.write(read_file.read)
-          end
-        end
+        download_file(url, local_path)
         list_devices.inject([]) do |devices, device_sn|
           puts "installing app in device #{device_sn}"
-          cmd = PrivateMethods.synthesize_command("adb install -reinstall /tmp/app.apk", device_sn)
+          cmd = PrivateMethods.synthesize_command("adb install -reinstall #{local_path}", device_sn)
           puts cmd
           puts `#{cmd}`.chomp
         end
