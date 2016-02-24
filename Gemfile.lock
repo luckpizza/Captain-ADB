@@ -6,6 +6,7 @@ GEM
       tilt
     json (1.7.7)
     multi_json (1.9.0)
+    plist (3.2.0)
     rack (1.5.2)
     rack-protection (1.5.2)
       rack
@@ -30,5 +31,9 @@ PLATFORMS
 DEPENDENCIES
   haml
   json
+  plist
   sinatra
   sinatra-contrib
+
+BUNDLED WITH
+   1.11.2
