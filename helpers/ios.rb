@@ -18,8 +18,11 @@ module CaptainADB
           puts "list_devices_with_details for id: #{device_id} "
           [['release','ProductVersion'], ['model','ProductType']].each do |property_name, property|
             cmd = "ideviceinfo -u #{device_id} | grep #{property}"
-            regex = /#{property}\]:\s+\[(.*?)\]$/
-            property_value = regex.match(`#{cmd}`.chomp)
+            puts "IOS command: #{cmd}"
+            regex = /#{property}:\s+(.*?)$/
+            result = `#{cmd}`.chomp
+            puts "IOS result: #{result}"
+            property_value = regex.match(result)
             puts "iOS property: #{property.to_s} with value #{property_value}"
             device[property_name] = property_value ? property_value[1] : 'N/A'
           end
