@@ -28,13 +28,8 @@ module CaptainADB
             puts "iOS property: #{property.to_s} with value #{property_value}"
             device[property_name] = property_value ? property_value[1] : 'N/A'
           end
-          cmd = "idevicediagnostics diagnostics All -u #{device_id}"
-          puts "device info IOS command: #{cmd} "
-          result = `#{cmd}`
-          puts "plist resul is #{result}"
-          plist = Plist::parse_xml result
-          device['battery'] = plist['GasGauge']['DesignCapacity'] * 100 / plist['GasGauge']['FullChargeCapacity']
-          cmd = "ideviceinstaller -l -u #{device_id}"
+          device['battery'] = `ideviceinfo -q com.apple.mobile.battery -u #{device_id} -k BatteryCurrentCapacity`
+          cmd = "ideviceinstaller  -u #{device_id} -l | grep groupon.redemption.enterprise"
           result = `#{cmd}`
           pkg = "com.groupon.redemption.enterprise - Merchant"
           regex = /#{pkg}+(.*?)$/
