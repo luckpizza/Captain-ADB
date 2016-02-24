@@ -1,5 +1,6 @@
 require_relative 'io_stream'
 require 'open-uri'
+require_relative 'ios'
 
 def initialize
   @my_mutex = Mutex.new
@@ -33,7 +34,7 @@ module CaptainADB
         end
       end
     end
-    
+
     def list_devices_with_details
       devices = list_devices.inject([]) do |devices, device_sn|
         device = {}
@@ -48,8 +49,14 @@ module CaptainADB
         end
         device['app_version'] = `adb -s #{device_sn} shell dumpsys package com.groupon.redemption | egrep versionName`.gsub(/(.*=)/, "")
         device['battery'] = `adb -s #{device_sn} shell dumpsys battery | grep level`.gsub(/.*:/, "")
+        puts "android device: #{device}"
         devices.push(device)
       end
+      Ios.list_devices_with_details.each do |ios_device|
+        devices.push(ios_device)
+      end
+      puts "All devices: #{devices}"
+      devices
     end
     
     def list_installed_packages(device_sn = nil)
