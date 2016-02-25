@@ -42,7 +42,7 @@
   function loadDevicesList() {
   $("#refresh_button").attr("disabled", true);
   $("#action_container").css("visibility", "hidden");
-  $("#devicesList").append($("<br>")).append($("<h1>").text("Loading Devices, please wait"));
+  $("#devicesList").append($("<br>")).append($("<h1>").text("Loading Devices, please wait..."));
     $.get('/api/devices', function(data) {
       $("#devicesList").empty();
       if (data.length > 0) {
@@ -50,9 +50,8 @@
         data.forEach(function(item) {
           $("#devicesList").find("tbody").append($("<tr>").click(function() { $(this).find("td input:radio").prop("checked", true); }).append($("<td>").text(item.sn)).append($("<td>").text(item.manufacturer)).append($("<td>").text(item.release)).append($("<td>").text(item.app_version)).append($("<td>").text(item.battery)).append($("<td>").text(item.model)));
         });
-          $("#action_container").css("visibility", "visible");
-          $("#refresh_button").attr("disabled", false);
-
+        $("#action_container").css("visibility", "visible");
+        $("#refresh_button").attr("disabled", false);
         } else {
         $("#devicesList").append($("<br>")).append($("<h1>").text("No Devices found"));
       }
@@ -76,14 +75,14 @@
 %div{:id =>"action_container"}
   %button{:type => "button", :class => "btn btn-warning vertical-center", :onclick => "updateAndroidApp()", :style => "display: inline-block; margin-left: 10px;"} Update Android Groupon App
   %form{:role => "form", :action => "/api/devices/update_android", :method => "post"}
-    %h3{:class => "vertical-center", :style => "display: inline-block;"} Install apk in ALL devices from URL
+    %h4{:class => "vertical-center", :style => "display: inline-block;"} Install apk in ALL devices from URL
     %div{:class => "new-line ui-widget"}
       %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/apk"}
     %div{:class => "new-line"}
       %button{:type => "submit", :class => "btn btn-success center-block"} Install apk
 
   %form{:role => "form", :action => "/api/devices/update_ios", :method => "post"}
-    %h3{:class => "vertical-center", :style => "display: inline-block;"} Install IOS app in ALL iOS devices from URL
+    %h4{:class => "vertical-center", :style => "display: inline-block;"} Install IOS app in ALL iOS devices from URL
     %div{:class => "new-line ui-widget"}
       %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/iosAPP"}
     %div{:class => "new-line"}
