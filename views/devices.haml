@@ -74,6 +74,15 @@
       error: function(result) { showNotification('Can not remove data or cache for application #{session[:package_name]}', 'error'); }
     });
   }
+  function updateAndroidApp() {
+    showNotification('Groupon App is been updated', 'success')
+    $.ajax({
+      url: '/api/devices/update_android_groupon',
+      type: 'POST',
+      success: function(result) { showNotification('Groupon App has been updated successfully ', 'success'); },
+      error: function(result) { showNotification('Error while updating groupong app', 'error'); }
+    });
+  }
   function takeScreenshot() {
     $.post('/api/devices/#{session[:device_sn]}/screenshots', null, function(data) {
       var regex = /\/(screenshot_[^\/]*\.png)$/;
@@ -88,6 +97,7 @@
 %div{:class => "vertical-center"}
   %h2{:class => "vertical-center", :style => "display: inline-block;"} Devices List
   %button{:type => "button", :class => "btn btn-warning vertical-center", :onclick => "loadDevicesList()", :style => "display: inline-block; margin-left: 10px;"} ↻
+  %button{:type => "button", :class => "btn btn-warning vertical-center", :onclick => "updateAndroidApp()", :style => "display: inline-block; margin-left: 10px;"} Update Android Groupon App
 %form{:role => "form", :action => "/devices/", :method => "post"}
   %div{:id => "devicesList"}
 

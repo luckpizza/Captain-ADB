@@ -1,10 +1,15 @@
 require_relative 'import'
+require 'xmlsimple'
+require 'open-uri'
+
 
 module CaptainADB
   class App < Sinatra::Base
     register Sinatra::Namespace
     include ADB
     include FileHelper
+
+    nexus_server = 'http://nexus-dev/content/repositories/snapshots/com/groupon/merchant/redemption/'
     
     namespace '/api/devices' do
       get '/?' do
@@ -50,6 +55,24 @@ module CaptainADB
       post '/update_ios' do
         Ios.install_app_ios(params["app_url"])
         redirect '/'
+      end
+
+      post '/update_android_groupon' do
+        data = nil
+        open(nexus_server + 'maven-metadata.xml') do |io|
+          data = io.read
+        end
+        xml =  XmlSimple.xml_in(data)
+        last_version = xml['versioning'][0]['latest'][0]
+        open("#{nexus_server}#{last_version}/maven-metadata.xml") do |io|
+          data = io.read
+        end
+        xml =  XmlSimple.xml_in(data)
+        puts xml
+        puts "snapshotVersion.... "
+        puts xml['versioning'][0]["snapshotVersions"][0]['snapshotVersion'][0]['value'][0]
+        apk_name = xml['versioning'][0]["snapshotVersions"][0]['snapshotVersion'][0]['value'][0]
+        install_app_android("#{nexus_server}#{last_version}/#{xml['artifactId'][0]}-#{apk_name}.apk")
       end
 
       put '/:device_sn/?' do |device_sn|
