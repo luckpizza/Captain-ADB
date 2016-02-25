@@ -17,6 +17,7 @@
   function setMarginOfContent() {
     $('.container-fluid').css('marginTop', $('.top-banner').height());
   }
+
   function showNotification(text, type) {
     new PNotify({
       type: type,
@@ -30,15 +31,7 @@
       remove: true
     });
   }
-  function selectDevice() {
-    var device = '#{session[:device_sn]}';
-    $('input[name=device_sn][value="'+device+'"]').click();
-    var installed_packages = []
-    if (device.length > 0) {
-      installed_packages = #{list_installed_packages(session[:device_sn])}
-    }
-    $('#packageName').autocomplete({ source: installed_packages });
-  }
+
   function loadDevicesList() {
   $("#refresh_button").attr("disabled", true);
   $("#action_container").css("visibility", "hidden");
@@ -59,12 +52,42 @@
   }
   function updateAndroidApp() {
     showNotification('Groupon App is been updated', 'success')
+    disableAndroidAppActions(true)
     $.ajax({
       url: '/api/devices/update_android_groupon',
       type: 'POST',
-      success: function(result) { showNotification('Groupon App has been updated successfully ', 'success'); },
-      error: function(result) { showNotification('Error while updating groupong app', 'error'); }
+      success: function(result) { disableAndroidAppActions(false); showNotification('Groupon App has been updated successfully ', 'success'); },
+      error: function(result) { disableAndroidAppActions(false); showNotification('Error while updating groupong app', 'error'); }
     });
+    }
+
+  function installIosApp() {
+    showNotification('App is been installed in All IOS devices', 'success')
+    $("#updateIosButton").attr("disabled", true);
+    $.ajax({
+      url: '/api/devices/update_ios',
+      type: 'POST',
+      data: { "app_url":$("#appUrlIos")[0].value },
+      success: function(result) {$("#appUrlIos")[0].value = ""; $("#updateIosButton").attr("disabled", false); showNotification('Groupon App has been updated successfully ', 'success'); },
+      error: function(result) { $("#updateIosButton").attr("disabled", false); showNotification('Error while updating groupong app', 'error'); }
+    });
+  }
+
+  function installAndroidApp() {
+    disableAndroidAppActions(true)
+    showNotification('App is been installed in All IOS devices', 'success')
+    $.ajax({
+      url: '/api/devices/update_android',
+      type: 'POST',
+      data: { "app_url":$("#appUrlAndroid")[0].value },
+      success: function(result) {$("#appUrlAndroid")[0].value = ""; disableAndroidAppActions(false); showNotification('Groupon App has been updated successfully ', 'success'); },
+      error: function(result) { disableAndroidAppActions(false); showNotification('Error while updating groupong app', 'error'); }
+    });
+  }
+
+  function disableAndroidAppActions(enable) {
+    $("#updateAndroidButton").attr("disabled", enable);
+    $("#updateMerchantAppAndroidButton").attr("disabled", enable);
   }
 %div{:class => "vertical-center"}
   %h2{:class => "vertical-center", :style => "display: inline-block;"} Devices List
@@ -73,18 +96,18 @@
   %div{:id => "devicesList"}
 
 %div{:id =>"action_container"}
-  %button{:type => "button", :class => "btn btn-warning vertical-center", :onclick => "updateAndroidApp()", :style => "display: inline-block; margin-left: 10px;"} Update Android Groupon App
-  %form{:role => "form", :action => "/api/devices/update_android", :method => "post"}
+  %button{:type => "button", :class => "btn btn-warning vertical-center", :onclick => "updateAndroidApp()", :id => "updateMerchantAppAndroidButton", :style => "display: inline-block; margin-left: 10px;"} Update Android Groupon App
+  %div{:id =>"android"}
     %h4{:class => "vertical-center", :style => "display: inline-block;"} Install apk in ALL devices from URL
     %div{:class => "new-line ui-widget"}
-      %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/apk"}
+      %input{:type => "text", :class => "form-control", :id => "appUrlAndroid", :name => "app_url", :placeholder => "http://my.url/apk"}
     %div{:class => "new-line"}
-      %button{:type => "submit", :class => "btn btn-success center-block"} Install apk
+      %button{:type => "submit", :onclick => "installAndroidApp()", :id => "updateAndroidButton", :class => "btn btn-success center-block"} Install apk
 
-  %form{:role => "form", :action => "/api/devices/update_ios", :method => "post"}
+  %div{:id =>"ios"}
     %h4{:class => "vertical-center", :style => "display: inline-block;"} Install IOS app in ALL iOS devices from URL
     %div{:class => "new-line ui-widget"}
-      %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/iosAPP"}
+      %input{:type => "text", :class => "form-control", :id => "appUrlIos", :name => "app_url", :placeholder => "http://my.url/iosAPP"}
     %div{:class => "new-line"}
-      %button{:type => "submit", :class => "btn btn-success center-block"} Install iOS app
+      %button{:type => "submit", :onclick => "installIosApp()", :class => "btn btn-success center-block", :id => "updateIosButton"} Install iOS app
 
