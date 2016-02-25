@@ -1,6 +1,13 @@
 require_relative 'import'
+require 'rubygems'
+require 'rufus/scheduler'
 
 module CaptainADB
+
+  scheduler = Rufus::Scheduler.new
+  scheduler.cron '0 22 * * 1-5' do
+    ADB.update_groupon_app_android()
+  end
   class App < Sinatra::Base
     register Sinatra::Namespace
     include ADB

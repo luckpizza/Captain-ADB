@@ -1,5 +1,4 @@
 require_relative 'import'
-require 'xmlsimple'
 require 'open-uri'
 
 
@@ -58,21 +57,7 @@ module CaptainADB
       end
 
       post '/update_android_groupon' do
-        data = nil
-        open(nexus_server + 'maven-metadata.xml') do |io|
-          data = io.read
-        end
-        xml =  XmlSimple.xml_in(data)
-        last_version = xml['versioning'][0]['latest'][0]
-        open("#{nexus_server}#{last_version}/maven-metadata.xml") do |io|
-          data = io.read
-        end
-        xml =  XmlSimple.xml_in(data)
-        puts xml
-        puts "snapshotVersion.... "
-        puts xml['versioning'][0]["snapshotVersions"][0]['snapshotVersion'][0]['value'][0]
-        apk_name = xml['versioning'][0]["snapshotVersions"][0]['snapshotVersion'][0]['value'][0]
-        install_app_android("#{nexus_server}#{last_version}/#{xml['artifactId'][0]}-#{apk_name}.apk")
+        update_groupon_app_android()
       end
 
       put '/:device_sn/?' do |device_sn|
