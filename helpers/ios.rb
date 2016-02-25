@@ -1,7 +1,8 @@
+require 'open-uri'
+
 module CaptainADB
   class Ios
     class << self
-      require 'plist'
 
       def list_devices_ios
         list = `idevice_id -l`
@@ -50,6 +51,27 @@ module CaptainADB
         device['manufacturer'] ="Apple"
         puts "IOS device #{device}"
       end
+
+      def install_app_ios(url)
+        local_path = "/tmp/app.ipa"
+        download_file(url, local_path)
+        list_devices_ios.each do |device_sn|
+          puts "installing app in device #{device_sn}"
+          cmd = "ideviceinstaller -u #{device_sn} -i #{local_path}"
+          puts cmd
+          puts `#{cmd}`.chomp
+        end
+      end
+      def download_file(url, local_path)
+        puts "Downloading app from: #{url}"
+        File.open(local_path, "wb") do |saved_file|
+          # the following "open" is provided by open-uri
+          open(url, "rb") do |read_file|
+            saved_file.write(read_file.read)
+          end
+        end
+      end
+
     end
   end
 end

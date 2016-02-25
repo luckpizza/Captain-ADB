@@ -101,7 +101,7 @@ module CaptainADB
       info
     end
 
-    def install_app(url)
+    def install_app_android(url)
       local_path = "/tmp/app.apk"
       @my_mutex.synchronize do
         download_file(url, local_path)

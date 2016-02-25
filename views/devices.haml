@@ -91,12 +91,19 @@
 %form{:role => "form", :action => "/devices/", :method => "post"}
   %div{:id => "devicesList"}
 
-%form{:role => "form", :action => "/api/devices/update", :method => "post"}
+%form{:role => "form", :action => "/api/devices/update_android", :method => "post"}
   %h3{:class => "vertical-center", :style => "display: inline-block;"} Install apk in ALL devices from URL
   %div{:class => "new-line ui-widget"}
     %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/apk"}
   %div{:class => "new-line"}
     %button{:type => "submit", :class => "btn btn-success center-block"} Install apk
+
+%form{:role => "form", :action => "/api/devices/update_ios", :method => "post"}
+  %h3{:class => "vertical-center", :style => "display: inline-block;"} Install IOS app in ALL iOS devices from URL
+  %div{:class => "new-line ui-widget"}
+    %input{:type => "text", :class => "form-control", :id => "appUrl", :name => "app_url", :placeholder => "http://my.url/iosAPP"}
+  %div{:class => "new-line"}
+    %button{:type => "submit", :class => "btn btn-success center-block"} Install iOS app
 
 %form{:role => "form", :action => "/devices/#{session[:device_sn]}/packages/", :method => "post"}
   - if session[:device_sn]

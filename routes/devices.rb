@@ -42,8 +42,13 @@ module CaptainADB
         result.first ? [201, result[1].to_json] : [500, result[1].to_json]
       end
 
-      post '/update' do
-        install_app(params["app_url"])
+      post '/update_android' do
+        install_app_android(params["app_url"])
+        redirect '/'
+      end
+
+      post '/update_ios' do
+        Ios.install_app_ios(params["app_url"])
         redirect '/'
       end
 
